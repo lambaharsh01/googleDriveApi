@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File to Base64 Converter</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    h1 {
+      font-weight: 500;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .displayNone {
+      display: none;
+    }
+    .flexCenter {
+      display: flex;
+      justify-content: center;
+    }
+
+    .googleBlue {
+      color: #4285f4;
+    }
+
+    .googleRed {
+      color: #ea4335;
+    }
+
+    .googleYellow {
+      color: #fbbc05;
+    }
+
+    .googleGreen {
+      color: #34a853;
+    }
+
+    .textCenter {
+      text-align: center;
+    }
+
+    /* BUTTON DESIGN */
+
+    .button-53 {
+      background-color: #3dd1e7;
+      border: 0 solid #e5e7eb;
+      box-sizing: border-box;
+      color: #000000;
+      display: flex;
+      font-family: ui-sans-serif, system-ui, -apple-system, system-ui,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+      font-size: 1rem;
+      font-weight: 700;
+      justify-content: center;
+      line-height: 1.75rem;
+      padding: 0.75rem 1.65rem;
+      position: relative;
+      text-align: center;
+      text-decoration: none #000000 solid;
+      text-decoration-thickness: auto;
+      width: 300px;
+      max-width: 460px;
+      position: relative;
+      cursor: pointer;
+      transform: rotate(-2deg);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    .button-53:focus {
+      outline: 0;
+    }
+
+    .button-53:after {
+      content: "";
+      position: absolute;
+      border: 1px solid #000000;
+      bottom: 4px;
+      left: 4px;
+      width: calc(100% - 1px);
+      height: calc(100% - 1px);
+    }
+
+    .button-53:hover:after {
+      bottom: 2px;
+      left: 2px;
+    }
+
+    @media (min-width: 768px) {
+      .button-53 {
+        padding: 0.75rem 3rem;
+        font-size: 1.25rem;
+      }
+    }
+
+    /* SPINNER */
+    .lds-spinner {
+      /* change color here */
+      color: #1c4c5b;
+    }
+
+    .lds-spinner,
+    .lds-spinner div,
+    .lds-spinner div:after {
+      box-sizing: border-box;
+    }
+
+    .lds-spinner {
+      color: currentColor;
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .lds-spinner div {
+      transform-origin: 40px 40px;
+      animation: lds-spinner 1.2s linear infinite;
+    }
+
+    .lds-spinner div:after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 3.2px;
+      left: 36.8px;
+      width: 6.4px;
+      height: 17.6px;
+      border-radius: 20%;
+      background: currentColor;
+    }
+
+    .lds-spinner div:nth-child(1),
+    .lds-spinner div:nth-child(4),
+    .lds-spinner div:nth-child(7),
+    .lds-spinner div:nth-child(10) {
+      color: #4285f4; /* Google Blue */
+    }
+
+    .lds-spinner div:nth-child(2),
+    .lds-spinner div:nth-child(5),
+    .lds-spinner div:nth-child(8),
+    .lds-spinner div:nth-child(11) {
+      color: #ea4335; /* Google Red */
+    }
+
+    .lds-spinner div:nth-child(3),
+    .lds-spinner div:nth-child(6),
+    .lds-spinner div:nth-child(9),
+    .lds-spinner div:nth-child(12) {
+      color: #fbbc05; /* Google Yellow */
+    }
+
+    /* Optional: Add a 4th color */
+    /*
+    .lds-spinner div:nth-child(3),
+    .lds-spinner div:nth-child(6),
+    .lds-spinner div:nth-child(9) {
+      color: #34a853; /* Google Green */
+
+    .lds-spinner div:nth-child(1) {
+      transform: rotate(0deg);
+      animation-delay: -1.1s;
+    }
+
+    .lds-spinner div:nth-child(2) {
+      transform: rotate(30deg);
+      animation-delay: -1s;
+    }
+
+    .lds-spinner div:nth-child(3) {
+      transform: rotate(60deg);
+      animation-delay: -0.9s;
+    }
+
+    .lds-spinner div:nth-child(4) {
+      transform: rotate(90deg);
+      animation-delay: -0.8s;
+    }
+
+    .lds-spinner div:nth-child(5) {
+      transform: rotate(120deg);
+      animation-delay: -0.7s;
+    }
+
+    .lds-spinner div:nth-child(6) {
+      transform: rotate(150deg);
+      animation-delay: -0.6s;
+    }
+
+    .lds-spinner div:nth-child(7) {
+      transform: rotate(180deg);
+      animation-delay: -0.5s;
+    }
+
+    .lds-spinner div:nth-child(8) {
+      transform: rotate(210deg);
+      animation-delay: -0.4s;
+    }
+
+    .lds-spinner div:nth-child(9) {
+      transform: rotate(240deg);
+      animation-delay: -0.3s;
+    }
+
+    .lds-spinner div:nth-child(10) {
+      transform: rotate(270deg);
+      animation-delay: -0.2s;
+    }
+
+    .lds-spinner div:nth-child(11) {
+      transform: rotate(300deg);
+      animation-delay: -0.1s;
+    }
+
+    .lds-spinner div:nth-child(12) {
+      transform: rotate(330deg);
+      animation-delay: 0s;
+    }
+
+    @keyframes lds-spinner {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  </style>
+
+  <body>
+    <h1 class="textCenter">
+      Upload To
+      <span class="googleBlue">G</span><span class="googleRed">o</span
+      ><span class="googleYellow">o</span><span class="googleBlue">g</span
+      ><span class="googleGreen">l</span><span class="googleRed">e</span>
+      Drive
+    </h1>
+
+    <div id="uploadSection">
+      <br />
+      <br />
+      <div class="flexCenter">
+        <label for="fileInput">
+          <img
+            src="./public/googleDrive.png"
+            height="200"
+            alt="uploadToDrive"
+          />
+        </label>
+      </div>
+    </div>
+
+    <div id="spinnerSection" class="displayNone">
+      <br />
+      <br />
+      <div class="flexCenter">
+        <div class="lds-spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="displayNone" id="viewSection">
+      <br />
+      <br />
+      <br />
+      <br />
+      <div class="flexCenter">
+        <a id="anchorTag" href="www.google.com" target="_blank">
+          <button class="button-53" role="button">View Your Upload</button>
+        </a>
+      </div>
+      <br />
+      <br />
+      <div class="flexCenter">
+        <button class="button-53" role="button" onclick="clickInput()">
+          Upload Another
+        </button>
+      </div>
+    </div>
+
+    <input type="file" id="fileInput" class="displayNone" />
+
+    <script>
+      function clickInput() {
+        $("#fileInput").trigger("click");
+      }
+
+      $(document).ready(function () {
+        $("#fileInput").on("change", function () {
+          const file = this.files[0];
+
+          if (!file) {
+            alert("No file uploaded");
+            return;
+          }
+
+          $("#uploadSection").addClass("displayNone");
+          $("#spinnerSection").removeClass("displayNone");
+          $("#viewSection").addClass("displayNone");
+
+          const reader = new FileReader();
+
+          reader.onload = function (event) {
+            const base64String = event.target.result;
+            console.log("Base64 String:", base64String);
+            uploadFile(base64String);
+          };
+
+          reader.readAsDataURL(file);
+        });
+      });
+
+      function uploadFile(base64) {
+        $.ajax({
+          url: "http://localhost:8080/uploadFile",
+          method: "post",
+          data: { base64 },
+          success: (res) => {
+            $("#fileInput").val("");
+
+            let imageUri = res?.data?.imageUri ?? null;
+
+            if (!imageUri) {
+              $("#uploadSection").removeClass("displayNone");
+              $("#spinnerSection").addClass("displayNone");
+              return alert("Image URL not recived");
+            }
+
+            $("#spinnerSection").addClass("displayNone");
+            $("#viewSection").removeClass("displayNone");
+
+            $("#anchorTag").attr("href", imageUri);
+          },
+          error: () => {
+            $("#fileInput").val("");
+            alert("Error");
+            alert("Please make sure youre not uploading a large file");
+            $("#uploadSection").removeClass("displayNone");
+            $("#spinnerSection").addClass("displayNone");
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
